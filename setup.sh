@@ -8,12 +8,12 @@ user=${SUDO_USER-USER}
 
 apt update
 apt install debootstrap
-sudo debootstrap --variant minbase --include=sudo,screen,openssh-server trusty "$shmsys" "$mirror"
+debootstrap --variant minbase --include=sudo,screen,isc-dhcp-client,openssh-server trusty "$shmsys" "$mirror"
 
 chroot "$shmsys" adduser --gecos "" "$user"
 chroot "$shmsys" adduser "$user" sudo
 
-cp -a --parents /opt/kite/klient/klient /etc/init/klient.conf /etc/init.d/klient /usr/share/doc/klient/changelog.gz /etc/kite/kite.key "$shmsys"
+cp -var --parents /opt/kite /etc/init/klient.conf /etc/init.d/klient /usr/share/doc/klient /etc/kite /etc/network/interfaces.d/*.cfg /etc/ssh/ssh_host_* "$shmsys"
 
 cat > /usr/share/initramfs-tools/scripts/local-bottom/kosie_move <<EOF
 #!/bin/sh

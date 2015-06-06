@@ -4,13 +4,14 @@ set -e -u
 
 shmsys=/kosie-root
 mirror=http://us-west-2.ec2.archive.ubuntu.com/ubuntu
+user=${SUDO_USER-USER}
 
 apt update
 apt install debootstrap
 sudo debootstrap --variant minbase --include=sudo,screen,openssh-server trusty "$shmsys" "$mirror"
 
-chroot "$shmsys" adduser --gecos "" "$USER"
-chroot "$shmsys" adduser "$USER" sudo
+chroot "$shmsys" adduser --gecos "" "$user"
+chroot "$shmsys" adduser "$user" sudo
 
 cp -a --parents /opt/kite/klient/klient /etc/init/klient.conf /etc/init.d/klient /usr/share/doc/klient/changelog.gz /etc/kite/kite.key "$shmsys"
 
